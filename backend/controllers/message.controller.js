@@ -1,5 +1,6 @@
 const { Conversation } = require("../models/conversation.model");
 const { Message } = require("../models/message.model");
+const { getReceiverSocketId, io } = require("../socket/socket");
 
 const sendMessage = async (req, res) => {
   try {
@@ -35,6 +36,13 @@ const sendMessage = async (req, res) => {
 
     // this will run in parallel
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    // SOCKET
+    const receiverSocketId = getReceiverSocketId(recieverId);
+    if (receiverSocketId) {
+      // to specific user
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
