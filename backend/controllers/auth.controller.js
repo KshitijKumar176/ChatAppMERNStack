@@ -52,7 +52,7 @@ const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const boyPic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const girlPic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const girlPic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
     const newUser = new User({
       username,
